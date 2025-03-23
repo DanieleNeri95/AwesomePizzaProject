@@ -6,6 +6,7 @@ import adesso.it.AwesomePizza.entity.Order;
 import adesso.it.AwesomePizza.entity.Pizza;
 import adesso.it.AwesomePizza.exeption.IngredientNotFoundException;
 import adesso.it.AwesomePizza.exeption.OrderNotAssignedException;
+import adesso.it.AwesomePizza.exeption.OrderNotFoundException;
 import adesso.it.AwesomePizza.exeption.PizzaNotFoundException;
 import adesso.it.AwesomePizza.mapper.OrderMapper;
 import adesso.it.AwesomePizza.mapper.PizzaMapper;
@@ -85,20 +86,15 @@ public class OrderServiceImpl implements OrderService {
         return new OrderResponse(code, pizzaResponseList, order.getTotalPrice(), order.getStatus(), order.getCreatedAt());
     }
 
-
-    @Override
-    public Order getOrder(String cod) {
-        return null;
-    }
-
     @Override
     public OrderResponse getOrderByCode(String code) {
-        return null;
-    }
+        var order = orderRepository.findByCode(code);
 
-    @Override
-    public OrderResponse getOrderById(UUID id) {
-        return null;
+        if(!order.isPresent())
+            throw new OrderNotFoundException("L'ordine con codice: "+code+" non trovato.");
+
+
+        return orderMapper.mapOrderToOrderResponse(order.get());
     }
 
     @Override

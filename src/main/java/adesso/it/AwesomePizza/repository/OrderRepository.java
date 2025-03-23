@@ -1,6 +1,5 @@
 package adesso.it.AwesomePizza.repository;
 
-import adesso.it.AwesomePizza.DTO.OrderResponse;
 import adesso.it.AwesomePizza.entity.Order;
 import adesso.it.AwesomePizza.utils.OrderStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -19,4 +18,6 @@ public interface OrderRepository extends JpaRepository<Order, UUID> {
     Optional<Order> findByCodeAndStatus(String code, OrderStatus status);
 
     boolean existsByTakedByAndStatusNot(String takedBy, OrderStatus status);
+
+    Optional<Order> findByCode(String code);
 }

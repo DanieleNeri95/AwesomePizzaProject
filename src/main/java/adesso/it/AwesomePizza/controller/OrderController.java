@@ -3,13 +3,11 @@ package adesso.it.AwesomePizza.controller;
 import adesso.it.AwesomePizza.DTO.OrderRequest;
 import adesso.it.AwesomePizza.DTO.OrderResponse;
 import adesso.it.AwesomePizza.service.OrderService;
-import adesso.it.AwesomePizza.utils.OrderStatus;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/order")
@@ -28,8 +26,8 @@ public class OrderController {
 
     @GetMapping
     public ResponseEntity<List<OrderResponse>> getQueuedOrdersByArrival() {
-        List<OrderResponse> orders = orderService.getQueuedOrdersByArrival();
-        return ResponseEntity.ok(orders);
+        List<OrderResponse> orderResponse = orderService.getQueuedOrdersByArrival();
+        return ResponseEntity.ok(orderResponse);
     }
 
     @PutMapping("/{code}/{pizzaMakerName}")
@@ -38,7 +36,7 @@ public class OrderController {
         return ResponseEntity.accepted().build();
     }
 
-    @GetMapping("/code/{code}")
+    @GetMapping("/{code}")
     public ResponseEntity<OrderResponse> getOrderByCode(@PathVariable String code) {
         OrderResponse orderResponse = orderService.getOrderByCode(code);
         return orderResponse != null ? ResponseEntity.ok(orderResponse) : ResponseEntity.notFound().build();
