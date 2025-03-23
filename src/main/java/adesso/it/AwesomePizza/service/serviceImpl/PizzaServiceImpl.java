@@ -17,6 +17,7 @@ public class PizzaServiceImpl implements PizzaService {
     PizzaRepository pizzaRepository;
 
     private final PizzaMapper pizzaMapper;
+    private final String BASE = "BASE";
 
     public PizzaServiceImpl(PizzaMapper pizzaMapper) {
         this.pizzaMapper = pizzaMapper;
@@ -29,17 +30,7 @@ public class PizzaServiceImpl implements PizzaService {
 
     @Override
     public List<PizzaDTO> getAllPizzas() {
-        return null;
-    }
-
-    @Override
-    public PizzaDTO getPizzaById(UUID id) {
-        return null;
-    }
-
-    @Override
-    public PizzaDTO updatePizza(UUID id, PizzaDTO pizzaDTO) {
-        return null;
+        return pizzaMapper.toDTOList(pizzaRepository.findAllByNameContains(BASE));
     }
 
     @Override

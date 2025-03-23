@@ -1,10 +1,9 @@
 package adesso.it.AwesomePizza.mapper;
 
-import adesso.it.AwesomePizza.DTO.IngredientDTO;
+import adesso.it.AwesomePizza.DTO.IngredientResponse;
 import adesso.it.AwesomePizza.DTO.PizzaDTO;
 import adesso.it.AwesomePizza.entity.Pizza;
 import adesso.it.AwesomePizza.repository.IngredientRepository;
-import jakarta.persistence.Column;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -18,31 +17,31 @@ public class PizzaMapper {
     IngredientRepository ingredientRepository;
 
     public Pizza mapToEntity(PizzaDTO pizzaDTO) {
-
         Pizza pizza = new Pizza();
         pizza.setName(pizzaDTO.getName());
         pizza.setPrice(pizzaDTO.getPrice());
 
-        List<IngredientDTO> ingredients = pizzaDTO.getIngredients();
+        List<IngredientResponse> ingredients = pizzaDTO.getIngredients();
 
-        if (pizzaDTO.getRemovedIngredients() != null) {
-            ingredients.removeAll(pizzaDTO.getRemovedIngredients());
-        }
-        if (pizzaDTO.getAddedIngredients() != null) {
-            ingredients.addAll(pizzaDTO.getAddedIngredients());
-        }
         pizza.setIngredients(ingredientRepository.findByNameIn(ingredients.stream().map(i -> i.getName()).toList()));
         return pizza;
     }
 
-    public List<Pizza> mapPizzaToEntityList(List<PizzaDTO> pizzeDTO) {
+    public PizzaDTO mapToDTO(Pizza pizza) {
+        PizzaDTO pizzaDTO = new PizzaDTO();
+        pizzaDTO.setName(pizza.getName());
+        pizzaDTO.setPrice(pizza.getPrice());
 
-        List<Pizza> pizze = new ArrayList<>();
-        var pizza = new Pizza();
-        for (PizzaDTO pizzaDto: pizzeDTO) {
-            pizza = mapToEntity(pizzaDto);
-            pizze.add(pizza);
+        pizzaDTO.setIngredients(pizza.getIngredients().stream().map(i -> new IngredientResponse(i.getName())).toList());
+        return pizzaDTO;
+    }
+
+    public List<PizzaDTO> toDTOList (List<Pizza> pizzas){
+        List<PizzaDTO> pizzaDTOS = new ArrayList<>();
+        for (Pizza pizza : pizzas) {
+            var dto = mapToDTO(pizza);
+            pizzaDTOS.add(dto);
         }
-        return pizze;
+        return pizzaDTOS;
     }
 }

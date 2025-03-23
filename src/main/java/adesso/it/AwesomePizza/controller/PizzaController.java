@@ -19,11 +19,10 @@ public class PizzaController {
         this.pizzaService = pizzaService;
     }
 
-
     @PostMapping
-    public ResponseEntity createPizza(@Valid @RequestBody PizzaDTO pizzaDTO) {
+    public ResponseEntity<PizzaDTO> createPizza(@Valid @RequestBody PizzaDTO pizzaDTO) {
         pizzaService.createPizza(pizzaDTO);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.status(201).build();
     }
 
     @GetMapping
@@ -32,23 +31,9 @@ public class PizzaController {
         return ResponseEntity.ok(pizzas);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<PizzaDTO> getPizzaById(@PathVariable UUID id) {
-        PizzaDTO pizza = pizzaService.getPizzaById(id);
-        return pizza != null ? ResponseEntity.ok(pizza) : ResponseEntity.notFound().build();
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<PizzaDTO> updatePizza(@PathVariable UUID id, @Valid @RequestBody PizzaDTO pizzaDTO) {
-        PizzaDTO updatedPizza = pizzaService.updatePizza(id, pizzaDTO);
-        return updatedPizza != null ? ResponseEntity.ok(updatedPizza) : ResponseEntity.notFound().build();
-    }
-
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletePizza(@PathVariable UUID id) {
         boolean deleted = pizzaService.deletePizza(id);
         return deleted ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
     }
-
-
 }

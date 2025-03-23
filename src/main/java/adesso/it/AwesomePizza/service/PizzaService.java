@@ -10,9 +10,5 @@ public interface PizzaService {
 
     List<PizzaDTO> getAllPizzas();
 
-    PizzaDTO getPizzaById(UUID id);
-
-    PizzaDTO updatePizza(UUID id, PizzaDTO pizzaDTO);
-
     boolean deletePizza(UUID id);
 }
