@@ -5,6 +5,7 @@ import adesso.it.AwesomePizza.entity.Ingredient;
 import adesso.it.AwesomePizza.entity.Order;
 import adesso.it.AwesomePizza.entity.Pizza;
 import adesso.it.AwesomePizza.exeption.IngredientNotFoundException;
+import adesso.it.AwesomePizza.exeption.OrderNotAssignedException;
 import adesso.it.AwesomePizza.exeption.PizzaNotFoundException;
 import adesso.it.AwesomePizza.mapper.OrderMapper;
 import adesso.it.AwesomePizza.mapper.PizzaMapper;
@@ -109,6 +110,9 @@ public class OrderServiceImpl implements OrderService {
     public void assign(String code, String pizzaMakerName) {
 
         var order = orderRepository.findByCodeAndStatus(code, OrderStatus.QUEUED).orElseThrow(() -> new IngredientNotFoundException("Ordine con codice "+code+" già assegnato o non trovato."));
+
+        if(orderRepository.existsByTakedByAndStatusNot(pizzaMakerName, OrderStatus.DELIVERED))
+            throw new OrderNotAssignedException("Il pizzaiolo "+pizzaMakerName+" ha già in carico un ordine, terminare l'ordine precedente prima di prenderne in carico un'altro.");
 
         order.setStatus(OrderStatus.PICKED_UP);
         order.setTakedBy(pizzaMakerName);

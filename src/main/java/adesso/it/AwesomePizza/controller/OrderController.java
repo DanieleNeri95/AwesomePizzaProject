@@ -44,12 +44,4 @@ public class OrderController {
         return orderResponse != null ? ResponseEntity.ok(orderResponse) : ResponseEntity.notFound().build();
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<OrderResponse> getOrderById(@PathVariable UUID id) {
-        OrderResponse orderResponse = orderService.getOrderById(id);
-        return orderResponse != null ? ResponseEntity.ok(orderResponse) : ResponseEntity.notFound().build();
-    }
-
-
-
 }

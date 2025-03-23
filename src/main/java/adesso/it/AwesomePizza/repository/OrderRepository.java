@@ -17,4 +17,6 @@ public interface OrderRepository extends JpaRepository<Order, UUID> {
     List<Order> findByStatusOrderByCreatedAtAsc(Enum status);
 
     Optional<Order> findByCodeAndStatus(String code, OrderStatus status);
+
+    boolean existsByTakedByAndStatusNot(String takedBy, OrderStatus status);
 }
