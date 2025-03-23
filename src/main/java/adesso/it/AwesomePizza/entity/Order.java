@@ -39,6 +39,8 @@ public class Order {
     @Column(nullable = false)
     private Date createdAt;
 
+    private Date updatedAt;
+
     public Order(String code, List<Pizza> orderedPizzas, double totalPrice, Date createdAt, OrderStatus status) {
         this.code = code;
         this.orderedPizzas = orderedPizzas;
