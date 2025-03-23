@@ -17,6 +17,7 @@ import adesso.it.AwesomePizza.service.OrderService;
 import adesso.it.AwesomePizza.utils.OrderStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import java.util.*;
@@ -46,9 +47,8 @@ public class OrderServiceImpl implements OrderService {
     private static final Random RANDOM = new Random();
     private static final String BASE = "BASE";
 
-
-
     @Override
+    @Transactional
     public OrderResponse createOrder(OrderRequest orderRequest) {
 
         // mi genero un codice univoco, controllando che non esista già a db un ordine con lo stesso codice
@@ -112,24 +112,17 @@ public class OrderServiceImpl implements OrderService {
 
         order.setStatus(OrderStatus.PICKED_UP);
         order.setTakedBy(pizzaMakerName);
+        order.setUpdatedAt(new Date());
 
         orderRepository.save(order);
     }
 
-    private String generateUniqueOrderCode() {
-        String code;
-        do {
-            code = generateCode();
-        } while (orderRepository.existsByCode(code));
-        return code;
-    }
-
-    private String generateCode() {
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < CODE_LENGTH; i++) {
-            sb.append(CHARACTERS.charAt(RANDOM.nextInt(CHARACTERS.length())));
-        }
-        return sb.toString();
+    @Override
+    public void completeOrder(String code) {
+        var order = orderRepository.findByCodeAndStatus(code, OrderStatus.PICKED_UP).orElseThrow(() -> new IngredientNotFoundException("Ordine con codice "+code+" non trovato."));
+        order.setStatus(OrderStatus.DELIVERED);
+        order.setUpdatedAt(new Date());
+        orderRepository.save(order);
     }
 
     // preparo la lista degli ingredienti della pizza
@@ -150,5 +143,23 @@ public class OrderServiceImpl implements OrderService {
             updatedIngredients.removeIf(ingredient -> pizzaDTO.getRemovedIngredients().contains(ingredient.getName()));
 
         return updatedIngredients;
+    }
+
+    // verifico la sua univocità a db
+    private String generateUniqueOrderCode() {
+        String code;
+        do {
+            code = generateCode();
+        } while (orderRepository.existsByCode(code));
+        return code;
+    }
+
+    // genero un codice alfanumerico di 4 caratteri
+    private String generateCode() {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < CODE_LENGTH; i++) {
+            sb.append(CHARACTERS.charAt(RANDOM.nextInt(CHARACTERS.length())));
+        }
+        return sb.toString();
     }
 }

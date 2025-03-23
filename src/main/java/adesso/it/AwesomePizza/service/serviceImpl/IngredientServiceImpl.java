@@ -1,6 +1,6 @@
 package adesso.it.AwesomePizza.service.serviceImpl;
 
-import adesso.it.AwesomePizza.DTO.IngredientDTO;
+import adesso.it.AwesomePizza.DTO.IngredientResponse;
 import adesso.it.AwesomePizza.entity.Ingredient;
 import adesso.it.AwesomePizza.exeption.IngredientAlreadyExistsException;
 import adesso.it.AwesomePizza.exeption.IngredientNotFoundException;
@@ -9,6 +9,7 @@ import adesso.it.AwesomePizza.repository.IngredientRepository;
 import adesso.it.AwesomePizza.service.IngredientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import java.util.List;
@@ -45,11 +46,12 @@ public class IngredientServiceImpl implements IngredientService {
     }
 
     @Override
-    public List<IngredientDTO> getAllIngredients() {
+    public List<IngredientResponse> getAllIngredients() {
         return ingredientMapper.entotyToListDTO(ingredientRepository.findAll());
     }
 
     @Override
+    @Transactional
     public void createIngredients(List<String> ingredientNameList) {
         if(!CollectionUtils.isEmpty(ingredientNameList)){
             for (String ingredientName: ingredientNameList) {

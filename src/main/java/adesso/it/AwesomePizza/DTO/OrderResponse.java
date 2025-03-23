@@ -20,6 +20,7 @@ public class OrderResponse {
     private String pizzaMakerName;
     private Enum status;
     private Date createdAt;
+    private Date updatedAt;
     private double totalPrice;
 
     public OrderResponse(String code, List<OrderPizzaResponse> orderedPizzas, double totalPrice, Enum status, Date createdAt) {

@@ -1,7 +1,6 @@
 package adesso.it.AwesomePizza.service;
 
-import adesso.it.AwesomePizza.DTO.IngredientDTO;
-import adesso.it.AwesomePizza.entity.Ingredient;
+import adesso.it.AwesomePizza.DTO.IngredientResponse;
 
 import java.util.List;
 
@@ -10,7 +9,7 @@ public interface IngredientService {
 
     void deleteIngredient(String ingredientName);
 
-    List<IngredientDTO> getAllIngredients();
+    List<IngredientResponse> getAllIngredients();
 
     void createIngredients(List<String> ingredientNameList);
 }

@@ -1,9 +1,7 @@
 package adesso.it.AwesomePizza.controller;
 
-import adesso.it.AwesomePizza.DTO.IngredientDTO;
-import adesso.it.AwesomePizza.entity.Ingredient;
+import adesso.it.AwesomePizza.DTO.IngredientResponse;
 import adesso.it.AwesomePizza.service.IngredientService;
-import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,13 +19,13 @@ public class IngredientController {
     }
 
     @PostMapping("/{ingredientName}")
-    public ResponseEntity<IngredientDTO> createIngredient(@PathVariable String ingredientName) {
+    public ResponseEntity<IngredientResponse> createIngredient(@PathVariable String ingredientName) {
         ingredientService.createIngredient(ingredientName);
         return ResponseEntity.ok().build();
     }
 
     @PostMapping
-    public ResponseEntity<IngredientDTO> createIngredients(@RequestBody List<String> ingredientNameList) {
+    public ResponseEntity<IngredientResponse> createIngredients(@RequestBody List<String> ingredientNameList) {
         ingredientService.createIngredients(ingredientNameList);
         return ResponseEntity.ok().build();
     }
@@ -39,7 +37,7 @@ public class IngredientController {
     }
 
     @GetMapping
-    public ResponseEntity<List<IngredientDTO>> getAllIngredients() {
+    public ResponseEntity<List<IngredientResponse>> getAllIngredients() {
         return new ResponseEntity<>(ingredientService.getAllIngredients(), HttpStatus.OK);
     }
 }

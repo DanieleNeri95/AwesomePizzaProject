@@ -20,6 +20,9 @@ public class OrderMapper {
         orderResponse.setStatus(order.getStatus());
         orderResponse.setCreatedAt(order.getCreatedAt());
 
+        if(order.getUpdatedAt() != null)
+            orderResponse.setUpdatedAt(order.getUpdatedAt());
+
         // Mappo le pizze ordinate
         List<OrderPizzaResponse> orderedPizzas = new ArrayList<>();
         for (Pizza pizza : order.getOrderedPizzas()) {

@@ -1,6 +1,5 @@
 package adesso.it.AwesomePizza.DTO;
 
-import adesso.it.AwesomePizza.entity.Ingredient;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -21,9 +20,9 @@ public class PizzaDTO {
     private String name;
     @Size(min = 1, message = "La pizza deve contenere almeno un ingrediente.")
     @Valid
-    private List<IngredientDTO> ingredients;
-    private List<IngredientDTO> removedIngredients;
-    private List<IngredientDTO> addedIngredients;
+    private List<IngredientResponse> ingredients;
+    private List<IngredientResponse> removedIngredients;
+    private List<IngredientResponse> addedIngredients;
     private int quantity = 1;
     @NotNull(message = "Il prezzo della pizza è obbligatorio.")
     @Positive(message = "Il prezzo della pizza deve essere maggiore di zero.")

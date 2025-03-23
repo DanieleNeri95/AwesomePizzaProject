@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class IngredientDTO {
+public class IngredientResponse {
 
     @NotBlank(message = "Il nome dell'ingrediente non può essere vuoto.")
     private String name;
