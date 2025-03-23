@@ -36,6 +36,12 @@ public class OrderController {
         return ResponseEntity.accepted().build();
     }
 
+    @PutMapping("/{code}")
+    public ResponseEntity<OrderResponse> completeOrder(@PathVariable String code) {
+        orderService.completeOrder(code);
+        return ResponseEntity.accepted().build();
+    }
+
     @GetMapping("/{code}")
     public ResponseEntity<OrderResponse> getOrderByCode(@PathVariable String code) {
         OrderResponse orderResponse = orderService.getOrderByCode(code);

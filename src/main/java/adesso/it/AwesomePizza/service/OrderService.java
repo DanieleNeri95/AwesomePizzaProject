@@ -13,4 +13,6 @@ public interface OrderService {
     List<OrderResponse> getQueuedOrdersByArrival();
 
     void assign(String code, String pizzaMakerName);
+
+    void completeOrder(String code);
 }
