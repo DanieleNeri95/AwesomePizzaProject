@@ -33,7 +33,6 @@ public class PizzaController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletePizza(@PathVariable UUID id) {
-        boolean deleted = pizzaService.deletePizza(id);
-        return deleted ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
+        return pizzaService.deletePizza(id) ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
     }
 }
