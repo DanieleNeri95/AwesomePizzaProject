@@ -47,7 +47,7 @@ public class PizzaServiceImpl implements PizzaService {
     @Override
     public boolean deletePizza(UUID id) {
         Optional<Pizza> pizza = pizzaRepository.findById(id);
-        if(pizzaRepository.findById(id).isPresent()){
+        if(pizza.isPresent()){
             pizzaRepository.delete(pizza.get());
             return true;
         }

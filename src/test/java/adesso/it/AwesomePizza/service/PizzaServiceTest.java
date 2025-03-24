@@ -16,9 +16,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -162,4 +160,37 @@ class PizzaServiceTest {
         verify(pizzaRepository, times(1)).findAllByNameContains(BASE);
         verify(pizzaMapper, times(1)).toDTOList(Collections.emptyList());
     }
+
+    @Test
+    void testDeletePizza_PizzaExists_ShouldReturnTrue() {
+        UUID pizzaId = UUID.randomUUID();
+        Pizza pizza = new Pizza();
+        List<Ingredient> ingredientsE = new ArrayList<>();
+        ingredientsE.add(new Ingredient("Pomodoro"));
+        ingredientsE.add(new Ingredient("Mozzarella"));
+        ingredientsE.add(new Ingredient("Salame Piccante"));
+        pizza.setName("Diavola");
+        pizza.setIngredients(ingredientsE);
+        when(pizzaRepository.findById(pizzaId)).thenReturn(Optional.of(pizza));
+
+        boolean result = pizzaService.deletePizza(pizzaId);
+
+        assertTrue(result);
+        verify(pizzaRepository, times(1)).findById(pizzaId);
+        verify(pizzaRepository, times(1)).delete(pizza);
+    }
+
+    @Test
+    void testDeletePizza_PizzaDoesNotExist_ShouldReturnFalse() {
+        UUID pizzaId = UUID.randomUUID();
+
+        when(pizzaRepository.findById(pizzaId)).thenReturn(Optional.empty());
+
+        boolean result = pizzaService.deletePizza(pizzaId);
+
+        assertFalse(result);
+        verify(pizzaRepository, times(1)).findById(pizzaId);
+        verify(pizzaRepository, never()).delete(any());
+    }
+
 }
