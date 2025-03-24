@@ -13,7 +13,7 @@ import java.util.UUID;
 public interface PizzaRepository extends JpaRepository<Pizza, UUID> {
     List<Pizza> findByNameIn(List<String> names);
 
-    List<Optional<Pizza>> findByName(String name);
+    Optional<Pizza> findByName(String name);
 
     List<Pizza> findAllByNameContains(String base);
 
