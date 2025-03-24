@@ -15,7 +15,6 @@ import adesso.it.AwesomePizza.repository.OrderRepository;
 import adesso.it.AwesomePizza.repository.PizzaRepository;
 import adesso.it.AwesomePizza.service.OrderService;
 import adesso.it.AwesomePizza.utils.OrderStatus;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
@@ -25,19 +24,19 @@ import java.util.*;
 @Service
 public class OrderServiceImpl implements OrderService {
 
-    public OrderServiceImpl(PizzaMapper pizzaMapper, OrderMapper orderMapper) {
+    public OrderServiceImpl(OrderRepository orderRepository, PizzaRepository pizzaRepository, IngredientRepository ingredientRepository, PizzaMapper pizzaMapper, OrderMapper orderMapper) {
+        this.orderRepository = orderRepository;
+        this.pizzaRepository = pizzaRepository;
+        this.ingredientRepository = ingredientRepository;
         this.pizzaMapper = pizzaMapper;
         this.orderMapper = orderMapper;
     }
 
-    @Autowired
-    OrderRepository orderRepository;
+    private final OrderRepository orderRepository;
 
-    @Autowired
-    PizzaRepository pizzaRepository;
+    private final PizzaRepository pizzaRepository;
 
-    @Autowired
-    IngredientRepository ingredientRepository;
+    private final IngredientRepository ingredientRepository;
 
     private final PizzaMapper pizzaMapper;
     private final OrderMapper orderMapper;
