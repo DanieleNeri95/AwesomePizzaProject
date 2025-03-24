@@ -2,6 +2,7 @@ package adesso.it.AwesomePizza.service.serviceImpl;
 
 import adesso.it.AwesomePizza.DTO.IngredientResponse;
 import adesso.it.AwesomePizza.DTO.PizzaDTO;
+import adesso.it.AwesomePizza.entity.Pizza;
 import adesso.it.AwesomePizza.exeption.IngredientNotFoundException;
 import adesso.it.AwesomePizza.exeption.PizzaNameUsedException;
 import adesso.it.AwesomePizza.mapper.PizzaMapper;
@@ -11,6 +12,7 @@ import adesso.it.AwesomePizza.service.PizzaService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -44,6 +46,11 @@ public class PizzaServiceImpl implements PizzaService {
 
     @Override
     public boolean deletePizza(UUID id) {
+        Optional<Pizza> pizza = pizzaRepository.findById(id);
+        if(pizzaRepository.findById(id).isPresent()){
+            pizzaRepository.delete(pizza.get());
+            return true;
+        }
         return false;
     }
 
