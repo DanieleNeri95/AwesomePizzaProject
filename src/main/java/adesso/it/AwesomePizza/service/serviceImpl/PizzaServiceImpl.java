@@ -1,7 +1,10 @@
 package adesso.it.AwesomePizza.service.serviceImpl;
 
+import adesso.it.AwesomePizza.DTO.IngredientResponse;
 import adesso.it.AwesomePizza.DTO.PizzaDTO;
+import adesso.it.AwesomePizza.exeption.IngredientNotFoundException;
 import adesso.it.AwesomePizza.mapper.PizzaMapper;
+import adesso.it.AwesomePizza.repository.IngredientRepository;
 import adesso.it.AwesomePizza.repository.PizzaRepository;
 import adesso.it.AwesomePizza.service.PizzaService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +18,8 @@ public class PizzaServiceImpl implements PizzaService {
 
     @Autowired
     PizzaRepository pizzaRepository;
+    @Autowired
+    IngredientRepository ingredientRepository;
 
     private final PizzaMapper pizzaMapper;
     private final String BASE = "BASE";
@@ -25,6 +30,7 @@ public class PizzaServiceImpl implements PizzaService {
 
     @Override
     public void createPizza(PizzaDTO pizzaDTO) {
+        ingredientsCheck(pizzaDTO.getIngredients());
         var pizza = pizzaRepository.save(pizzaMapper.mapToEntity(pizzaDTO));
     }
 
@@ -36,5 +42,13 @@ public class PizzaServiceImpl implements PizzaService {
     @Override
     public boolean deletePizza(UUID id) {
         return false;
+    }
+
+    // verifico l'esistenza degli ingredienti
+    private void ingredientsCheck(List<IngredientResponse> ingredientList){
+        for (IngredientResponse ingredientResponse: ingredientList) {
+            if(!ingredientRepository.existsByName(ingredientResponse.getName()))
+                throw new IngredientNotFoundException("L'ingrediente "+ingredientResponse.getName()+" non disponibile.");
+        }
     }
 }
