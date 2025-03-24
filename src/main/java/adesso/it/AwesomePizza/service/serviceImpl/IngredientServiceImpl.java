@@ -7,7 +7,6 @@ import adesso.it.AwesomePizza.exeption.IngredientNotFoundException;
 import adesso.it.AwesomePizza.mapper.IngredientMapper;
 import adesso.it.AwesomePizza.repository.IngredientRepository;
 import adesso.it.AwesomePizza.service.IngredientService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
@@ -17,14 +16,14 @@ import java.util.List;
 @Service
 public class IngredientServiceImpl implements IngredientService {
 
-    public IngredientServiceImpl(IngredientMapper ingredientMapper) {
+    public IngredientServiceImpl(IngredientMapper ingredientMapper, IngredientRepository ingredientRepository) {
         this.ingredientMapper = ingredientMapper;
+        this.ingredientRepository = ingredientRepository;
     }
 
     private final IngredientMapper ingredientMapper;
 
-    @Autowired
-    IngredientRepository ingredientRepository;
+    private final IngredientRepository ingredientRepository;
 
 
     @Override
