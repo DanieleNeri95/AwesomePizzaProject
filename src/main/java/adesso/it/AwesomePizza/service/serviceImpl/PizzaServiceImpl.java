@@ -3,6 +3,7 @@ package adesso.it.AwesomePizza.service.serviceImpl;
 import adesso.it.AwesomePizza.DTO.IngredientResponse;
 import adesso.it.AwesomePizza.DTO.PizzaDTO;
 import adesso.it.AwesomePizza.exeption.IngredientNotFoundException;
+import adesso.it.AwesomePizza.exeption.PizzaNameUsedException;
 import adesso.it.AwesomePizza.mapper.PizzaMapper;
 import adesso.it.AwesomePizza.repository.IngredientRepository;
 import adesso.it.AwesomePizza.repository.PizzaRepository;
@@ -30,8 +31,11 @@ public class PizzaServiceImpl implements PizzaService {
 
     @Override
     public void createPizza(PizzaDTO pizzaDTO) {
+        if(pizzaRepository.existsByName(BASE+pizzaDTO.getName()))
+            throw new PizzaNameUsedException("Esiste già una pizza chiamata "+pizzaDTO.getName());
         ingredientsCheck(pizzaDTO.getIngredients());
-        var pizza = pizzaRepository.save(pizzaMapper.mapToEntity(pizzaDTO));
+        pizzaDTO.setName(BASE+pizzaDTO.getName());
+        pizzaRepository.save(pizzaMapper.mapToEntity(pizzaDTO));
     }
 
     @Override
