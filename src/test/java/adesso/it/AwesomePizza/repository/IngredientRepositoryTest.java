@@ -39,7 +39,7 @@ public class IngredientRepositoryTest {
         Optional<Ingredient> found = ingredientRepository.findByName("MozzarellaTest");
 
         assertTrue(found.isPresent(), "L'ingrediente MozzarellaTest dovrebbe essere presente");
-        assertEquals("Mozzarella", found.get().getName(), "Il nome dell'ingrediente dovrebbe essere MozzarellaTest");
+        assertEquals("MozzarellaTest", found.get().getName(), "Il nome dell'ingrediente dovrebbe essere MozzarellaTest");
     }
 
     @Test
@@ -77,7 +77,7 @@ public class IngredientRepositoryTest {
 
         assertNotNull(savedIngredient, "L'ingrediente salvato non dovrebbe essere nullo");
         assertNotNull(savedIngredient.getId(), "L'ID dell'ingrediente salvato non dovrebbe essere nullo");
-        assertEquals("Olive", savedIngredient.getName(), "Il nome dell'ingrediente salvato dovrebbe essere OliveTest");
+        assertEquals("OliveTest", savedIngredient.getName(), "Il nome dell'ingrediente salvato dovrebbe essere OliveTest");
     }
 
     @Test
