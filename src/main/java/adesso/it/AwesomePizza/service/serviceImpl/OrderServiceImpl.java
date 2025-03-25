@@ -103,6 +103,9 @@ public class OrderServiceImpl implements OrderService {
     @Override// cambiare nome in presaInCarico
     public void assign(String code, String pizzaMakerName) {
 
+        if(pizzaMakerName.isEmpty())
+            throw new BadRequestException("Nome del pizzaiolo necessario.");
+
         var order = orderRepository.findByCodeAndStatus(code, OrderStatus.QUEUED).orElseThrow(() -> new IngredientNotFoundException("Ordine con codice "+code+" già assegnato o non trovato."));
 
         if(orderRepository.existsByTakedByAndStatusNot(pizzaMakerName, OrderStatus.DELIVERED))

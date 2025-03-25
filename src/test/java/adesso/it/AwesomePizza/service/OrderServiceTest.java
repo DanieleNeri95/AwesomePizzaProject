@@ -304,6 +304,15 @@ class OrderServiceTest {
     }
 
     @Test
+    void testAssign_InvalidPizzaMakerName_ShouldThrowException() {
+        String pizzaMaker = "";
+
+        Exception exception = assertThrows(BadRequestException.class, () -> orderService.assign(code, pizzaMaker));
+
+        assertEquals("Nome del pizzaiolo necessario.", exception.getMessage());
+    }
+
+    @Test
     void testAssign_InvalidOrder_ShouldThrowException() {
         String pizzaMaker = "Mario Rossi";
 
