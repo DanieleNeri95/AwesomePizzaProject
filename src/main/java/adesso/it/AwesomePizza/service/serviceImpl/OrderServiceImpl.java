@@ -125,7 +125,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     // preparo la lista degli ingredienti della pizza
-    private List<Ingredient> updateIngredients (OrderPizzaRequest pizzaDTO, List<Ingredient> ingredientList){
+    public List<Ingredient> updateIngredients(OrderPizzaRequest pizzaDTO, List<Ingredient> ingredientList){
         // inserisco gli ingredienti della pizza base alla lista
         List<Ingredient> updatedIngredients = new ArrayList<>(ingredientList);
         // per ognuno verifico la sua esistenza a db,
@@ -145,7 +145,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     // verifico la sua univocità a db
-    private String generateUniqueOrderCode() {
+    public String generateUniqueOrderCode() {
         String code;
         do {
             code = generateCode();
@@ -154,7 +154,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     // genero un codice alfanumerico di 4 caratteri
-    private String generateCode() {
+    public String generateCode() {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < CODE_LENGTH; i++) {
             sb.append(CHARACTERS.charAt(RANDOM.nextInt(CHARACTERS.length())));
