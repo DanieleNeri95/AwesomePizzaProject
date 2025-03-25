@@ -26,9 +26,9 @@ public class PizzaRepositoryTest {
     @BeforeEach
     void setUp() {
         // Crea due pizze di esempio
-        pizzaMargherita = new Pizza("BASEMargherita", null, 0);
+        pizzaMargherita = new Pizza("BASEMargheritaTest", null, 0);
         pizzaMargherita.setPrice(10.0);
-        pizzaDiavola = new Pizza("BASEDiavola", null, 0);
+        pizzaDiavola = new Pizza("BASEDiavolaTest", null, 0);
         pizzaDiavola.setPrice(11.0);
 
         // Salva le pizze nel repository prima di ogni test
@@ -38,10 +38,10 @@ public class PizzaRepositoryTest {
 
     @Test
     void testFindByName() {
-        Optional<Pizza> pizza = pizzaRepository.findByName("BASEMargherita");
+        Optional<Pizza> pizza = pizzaRepository.findByName("BASEMargheritaTest");
 
-        assertTrue(pizza.isPresent(), "La pizza BASEMargherita dovrebbe essere presente");
-        assertEquals("BASEMargherita", pizza.get().getName(), "Il nome della pizza dovrebbe essere BASEMargherita");
+        assertTrue(pizza.isPresent(), "La pizza BASEMargheritaTest dovrebbe essere presente");
+        assertEquals("BASEMargheritaTest", pizza.get().getName(), "Il nome della pizza dovrebbe essere BASEMargheritaTest");
     }
 
     @Test
@@ -53,17 +53,17 @@ public class PizzaRepositoryTest {
 
     @Test
     void testFindAllByNameContains() {
-        List<Pizza> pizzas = pizzaRepository.findAllByNameContains("BASEDiavola");
+        List<Pizza> pizzas = pizzaRepository.findAllByNameContains("BASEDiavolaTest");
 
         assertNotNull(pizzas, "La lista di pizze non dovrebbe essere nulla");
-        assertEquals(2, pizzas.size(), "Dovrebbe esserci solo una pizza con nome che contiene 'BASEDiavola'");
-        assertEquals("BASEDiavola", pizzas.get(0).getName(), "La pizza trovata dovrebbe essere BASEDiavola");
+        assertEquals(1, pizzas.size(), "Dovrebbe esserci solo una pizza con nome che contiene 'BASEDiavolaTest'");
+        assertEquals("BASEDiavolaTest", pizzas.get(0).getName(), "La pizza trovata dovrebbe essere BASEDiavolaTest");
     }
 
     @Test
     void testExistsByName() {
-        boolean exists = pizzaRepository.existsByName("BASEDiavola");
-        assertTrue(exists, "La pizza Diavola dovrebbe esistere");
+        boolean exists = pizzaRepository.existsByName("BASEDiavolaTest");
+        assertTrue(exists, "La pizza BASEDiavolaTest dovrebbe esistere");
 
         exists = pizzaRepository.existsByName("NonExistentPizza");
         assertFalse(exists, "La pizza NonExistentPizza non dovrebbe esistere");
@@ -71,20 +71,20 @@ public class PizzaRepositoryTest {
 
     @Test
     void testSavePizza() {
-        Pizza newPizza = new Pizza("BASECapricciosa", null, 0);
+        Pizza newPizza = new Pizza("BASECapricciosaTest", null, 0);
         Pizza savedPizza = pizzaRepository.save(newPizza);
 
         assertNotNull(savedPizza, "La pizza salvata non dovrebbe essere nulla");
         assertNotNull(savedPizza.getId(), "L'ID della pizza salvata non dovrebbe essere nullo");
-        assertEquals("BASECapricciosa", savedPizza.getName(), "Il nome della pizza salvata dovrebbe essere BASECapricciosa");
+        assertEquals("BASECapricciosaTest", savedPizza.getName(), "Il nome della pizza salvata dovrebbe essere BASECapricciosaTest");
     }
 
     @Test
     void testDeletePizza() {
         pizzaRepository.delete(pizzaMargherita);
 
-        Optional<Pizza> deletedPizza = pizzaRepository.findByName("BASEMargherita");
-        assertFalse(deletedPizza.isPresent(), "La pizza Margherita dovrebbe essere stata eliminata");
+        Optional<Pizza> deletedPizza = pizzaRepository.findByName("BASEMargheritaTest");
+        assertFalse(deletedPizza.isPresent(), "La pizza BASEMargheritaTest dovrebbe essere stata eliminata");
     }
 
     @Test
