@@ -6,6 +6,7 @@ import adesso.it.AwesomePizza.entity.Ingredient;
 import adesso.it.AwesomePizza.entity.Order;
 import adesso.it.AwesomePizza.entity.Pizza;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +20,9 @@ public class OrderMapper {
         orderResponse.setTotalPrice(order.getTotalPrice());
         orderResponse.setStatus(order.getStatus());
         orderResponse.setCreatedAt(order.getCreatedAt());
+
+        if(order.getTakedBy() != null && !order.getTakedBy().isEmpty())
+            orderResponse.setPizzaMakerName(order.getTakedBy());
 
         if(order.getUpdatedAt() != null)
             orderResponse.setUpdatedAt(order.getUpdatedAt());
