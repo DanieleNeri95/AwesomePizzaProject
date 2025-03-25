@@ -10,6 +10,7 @@ import adesso.it.AwesomePizza.repository.IngredientRepository;
 import adesso.it.AwesomePizza.repository.PizzaRepository;
 import adesso.it.AwesomePizza.service.PizzaService;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.util.List;
 import java.util.Optional;
@@ -56,6 +57,8 @@ public class PizzaServiceImpl implements PizzaService {
 
     // verifico l'esistenza degli ingredienti
     public void ingredientsCheck(List<IngredientResponse> ingredientList){
+        if(CollectionUtils.isEmpty(ingredientList))
+            throw new IngredientNotFoundException("La lista degli ingredienti non può essere vuota.");
         for (IngredientResponse ingredientResponse: ingredientList) {
             if(!ingredientRepository.existsByName(ingredientResponse.getName()))
                 throw new IngredientNotFoundException("L'ingrediente "+ingredientResponse.getName()+" non disponibile.");

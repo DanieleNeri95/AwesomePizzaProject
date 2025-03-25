@@ -109,6 +109,17 @@ class PizzaServiceTest {
     }
 
     @Test
+    void testCreatePizza_EmptyIngredientsList_ShouldThrowException() {
+        PizzaDTO pizzaDTO = new PizzaDTO();
+        pizzaDTO.setName("Marinara");
+        pizzaDTO.setIngredients(new ArrayList<>());
+
+        Exception exception = assertThrows(IngredientNotFoundException.class, () -> pizzaService.createPizza(pizzaDTO));
+        assertEquals("La lista degli ingredienti non può essere vuota.", exception.getMessage());
+    }
+
+
+    @Test
     void testGetAllPizzas_ShouldReturnPizzaList() {
 
         PizzaDTO pizzaDTO = new PizzaDTO();
@@ -192,5 +203,25 @@ class PizzaServiceTest {
         verify(pizzaRepository, times(1)).findById(pizzaId);
         verify(pizzaRepository, never()).delete(any());
     }
+
+    @Test
+    void testIngredientsCheck_EmptyList_ShouldThrowException() {
+        List<IngredientResponse> emptyList = new ArrayList<>();
+        Exception exception = assertThrows(IngredientNotFoundException.class, () -> pizzaService.ingredientsCheck(emptyList));
+        assertEquals("La lista degli ingredienti non può essere vuota.", exception.getMessage());
+    }
+
+    @Test
+    void testIngredientsCheck_AllValidIngredients_ShouldPass() {
+        List<IngredientResponse> ingredients = new ArrayList<>();
+        ingredients.add(new IngredientResponse("Pomodoro"));
+        ingredients.add(new IngredientResponse("Mozzarella"));
+
+        when(ingredientRepository.existsByName("Pomodoro")).thenReturn(true);
+        when(ingredientRepository.existsByName("Mozzarella")).thenReturn(true);
+
+        assertDoesNotThrow(() -> pizzaService.ingredientsCheck(ingredients));
+    }
+
 
 }
