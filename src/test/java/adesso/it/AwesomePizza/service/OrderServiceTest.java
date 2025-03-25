@@ -7,10 +7,7 @@ import adesso.it.AwesomePizza.DTO.OrderResponse;
 import adesso.it.AwesomePizza.entity.Ingredient;
 import adesso.it.AwesomePizza.entity.Order;
 import adesso.it.AwesomePizza.entity.Pizza;
-import adesso.it.AwesomePizza.exeption.IngredientNotFoundException;
-import adesso.it.AwesomePizza.exeption.OrderNotAssignedException;
-import adesso.it.AwesomePizza.exeption.OrderNotFoundException;
-import adesso.it.AwesomePizza.exeption.PizzaNotFoundException;
+import adesso.it.AwesomePizza.exeption.*;
 import adesso.it.AwesomePizza.mapper.OrderMapper;
 import adesso.it.AwesomePizza.mapper.PizzaMapper;
 import adesso.it.AwesomePizza.repository.IngredientRepository;
@@ -57,6 +54,14 @@ class OrderServiceTest {
     @BeforeEach
     void setUp() {
         orderService = new OrderServiceImpl(orderRepository, pizzaRepository, ingredientRepository, pizzaMapper, orderMapper);
+    }
+
+    @Test
+    void testCreateOrder_BadRequest_ShouldThrowException() {
+        OrderRequest orderRequest = new OrderRequest();
+        Exception exception = assertThrows(BadRequestException.class, () -> orderService.createOrder(orderRequest));
+
+        assertEquals("Lista delle pizze necessaria.", exception.getMessage());
     }
 
     @Test

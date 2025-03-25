@@ -4,10 +4,7 @@ import adesso.it.AwesomePizza.DTO.*;
 import adesso.it.AwesomePizza.entity.Ingredient;
 import adesso.it.AwesomePizza.entity.Order;
 import adesso.it.AwesomePizza.entity.Pizza;
-import adesso.it.AwesomePizza.exeption.IngredientNotFoundException;
-import adesso.it.AwesomePizza.exeption.OrderNotAssignedException;
-import adesso.it.AwesomePizza.exeption.OrderNotFoundException;
-import adesso.it.AwesomePizza.exeption.PizzaNotFoundException;
+import adesso.it.AwesomePizza.exeption.*;
 import adesso.it.AwesomePizza.mapper.OrderMapper;
 import adesso.it.AwesomePizza.mapper.PizzaMapper;
 import adesso.it.AwesomePizza.repository.IngredientRepository;
@@ -50,6 +47,8 @@ public class OrderServiceImpl implements OrderService {
     @Transactional
     public OrderResponse createOrder(OrderRequest orderRequest) {
 
+        if(orderRequest.getOrderedPizzas() == null)
+            throw new BadRequestException("Lista delle pizze necessaria.");
         // mi genero un codice univoco, controllando che non esista già a db un ordine con lo stesso codice
         String code = generateUniqueOrderCode();
         List<Pizza> pizzaEntities = new ArrayList<>();
